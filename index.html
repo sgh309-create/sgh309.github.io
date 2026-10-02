@@ -1,117 +1,1038 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" class="h-full">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Floof Tier List</title>
-<style>
-:root{--ink:#392b32;--cream:#fff8ee;--pink:#ff8fab;--peach:#ffd6a5;--yellow:#fdffb6;--mint:#caffbf;--blue:#9bf6ff;--lav:#bdb2ff;--line:#eadbd0;--shadow:0 10px 28px rgba(80,45,55,.12)}
-*{box-sizing:border-box}body{margin:0;font-family:ui-rounded,"Trebuchet MS",system-ui,sans-serif;color:var(--ink);background:radial-gradient(circle at 10% 10%,#fff 0 7%,transparent 25%),linear-gradient(135deg,#fff8ee,#fff1f6 50%,#eefcff);min-height:100vh}
-header{padding:34px 24px 18px;text-align:center}h1{font-size:clamp(2.2rem,5vw,4.4rem);margin:0;font-weight:900;letter-spacing:-.06em}h1 span{display:inline-block;transform:rotate(-2deg);background:var(--yellow);padding:0 .18em;border-radius:.22em;box-shadow:4px 5px 0 #e9c95c}.sub{margin:14px auto 0;max-width:700px;font-size:1.05rem}
-.wrap{width:min(1400px,94vw);margin:auto}.toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:20px 0}.btn{border:2px solid var(--ink);background:white;padding:10px 16px;border-radius:999px;font-weight:800;cursor:pointer;box-shadow:3px 4px 0 var(--ink);transition:.15s}.btn:hover{transform:translate(-1px,-1px);box-shadow:4px 5px 0 var(--ink)}.btn:active{transform:translate(2px,2px);box-shadow:1px 2px 0 var(--ink)}
-.board{display:grid;gap:10px;margin-bottom:28px}.tier{display:grid;grid-template-columns:82px 1fr;min-height:126px;background:rgba(255,255,255,.8);border:3px solid white;border-radius:24px;box-shadow:var(--shadow);overflow:hidden}.label{display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:1000;border-right:3px solid white}.s{background:#ff8fab}.a{background:#ffd6a5}.b{background:#fdffb6}.c{background:#caffbf}.d{background:#9bf6ff}.f{background:#bdb2ff}.dropzone{padding:12px;display:flex;gap:12px;flex-wrap:wrap;align-content:flex-start;min-height:120px}.dropzone.over{background:rgba(255,255,255,.7);outline:4px dashed #ff8fab;outline-offset:-7px}
-.bank{background:rgba(255,255,255,.65);border:3px dashed #d9c5bd;border-radius:26px;padding:18px;margin-bottom:40px}.bank-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.bank h2{margin:0;font-size:1.35rem}.count{font-size:.9rem;font-weight:800;opacity:.65}.cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:13px}.cat{background:#fff;border:2px solid var(--line);border-radius:20px;padding:8px;cursor:grab;box-shadow:0 5px 12px rgba(80,45,55,.1);user-select:none;transition:.15s;position:relative}.cat:hover{transform:rotate(-1deg) translateY(-3px);box-shadow:0 10px 18px rgba(80,45,55,.15)}.cat.dragging{opacity:.35;transform:scale(.96)}.cat img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:14px;display:block;background:#eee}.name{font-weight:900;margin:8px 3px 1px;font-size:.95rem}.kind{font-size:.72rem;opacity:.6;margin:0 3px 3px}.ranked .cat{width:135px}.ranked .cat img{aspect-ratio:1/1}.ranked .name{font-size:.8rem}
-.hint{text-align:center;font-size:.9rem;opacity:.7;margin:-12px 0 22px}.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(100px);background:var(--ink);color:white;padding:12px 18px;border-radius:999px;font-weight:800;transition:.25s;z-index:5}.toast.show{transform:translateX(-50%) translateY(0)}
-@media(max-width:600px){.tier{grid-template-columns:58px 1fr}.label{font-size:2rem}.ranked .cat{width:110px}.cats{grid-template-columns:repeat(2,1fr)}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taylor Swift Song Finder | Discover Your Era & Track</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Pinyon+Script&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #090a10;
+            color: #f3f4f6;
+            overflow-x: hidden;
+        }
+
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        .font-script { font-family: 'Pinyon Script', cursive; }
+
+        /* Canvas Particle Background */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Glassmorphism Styles */
+        .glass-card {
+            background: rgba(18, 20, 32, 0.82);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+        }
+
+        .option-card {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .option-card:hover {
+            transform: translateY(-2px) scale(1.01);
+            border-color: rgba(244, 114, 182, 0.5);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 25px -5px rgba(236, 72, 153, 0.25);
+        }
+
+        /* Era Color Badges & Glows */
+        .era-debut { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border-color: rgba(16, 185, 129, 0.4); }
+        .era-fearless { background: rgba(234, 179, 8, 0.2); color: #fde047; border-color: rgba(234, 179, 8, 0.4); }
+        .era-speaknow { background: rgba(168, 85, 247, 0.2); color: #c084fc; border-color: rgba(168, 85, 247, 0.4); }
+        .era-red { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border-color: rgba(239, 68, 68, 0.4); }
+        .era-1989 { background: rgba(56, 189, 248, 0.2); color: #7dd3fc; border-color: rgba(56, 189, 248, 0.4); }
+        .era-reputation { background: rgba(107, 114, 128, 0.25); color: #e5e7eb; border-color: rgba(156, 163, 175, 0.4); }
+        .era-lover { background: rgba(244, 114, 182, 0.2); color: #f9a8d4; border-color: rgba(244, 114, 182, 0.4); }
+        .era-folklore { background: rgba(156, 163, 175, 0.2); color: #d1d5db; border-color: rgba(156, 163, 175, 0.4); }
+        .era-evermore { background: rgba(217, 119, 6, 0.2); color: #fcd34d; border-color: rgba(217, 119, 6, 0.4); }
+        .era-midnights { background: rgba(99, 102, 241, 0.2); color: #a5b4fc; border-color: rgba(99, 102, 241, 0.4); }
+        .era-ttpd { background: rgba(229, 231, 235, 0.15); color: #f3f4f6; border-color: rgba(229, 231, 235, 0.3); }
+
+        /* Custom Audio Visualizer Animations */
+        @keyframes soundWave {
+            0%, 100% { height: 6px; }
+            50% { height: 28px; }
+        }
+        .animate-bar { animation: soundWave 1.1s infinite ease-in-out; }
+
+        /* Smooth slide transition */
+        .slide-enter {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+        .slide-active {
+            opacity: 1;
+            transform: translateX(0);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #090a10; }
+        ::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
+    </style>
 </head>
-<body>
-<header><h1>🐾 <span>FLOOF</span> TIER LIST</h1><p class="sub">How fluffy is a cat? You decide. Drag every cat into S, A, B, C, D, or F and build your very own floof hierarchy.</p></header>
-<main class="wrap">
-<div class="toolbar"><button class="btn" id="shuffle">🔀 Shuffle cats</button><button class="btn" id="reset">↩ Reset board</button><button class="btn" id="random">🎲 Randomize ranking</button></div>
-<p class="hint">Tip: drag cats between tiers—or drag them back to the cat bank.</p>
-<section class="board" id="board"></section>
-<section class="bank"><div class="bank-head"><h2>🐱 The cat bank</h2><div class="count" id="count"></div></div><div class="cats" id="bank"></div></section>
-</main>
-<div class="toast" id="toast"></div>
-<script>
-const cats=[
-["Maine Coon","Domestic","https://loremflickr.com/500/500/mainecoon?lock=1"],
-["Persian","Domestic","https://loremflickr.com/500/500/persian,cat?lock=2"],
-["Ragdoll","Domestic","https://loremflickr.com/500/500/ragdoll,cat?lock=3"],
-["Norwegian Forest Cat","Domestic","https://loremflickr.com/500/500/norwegianforestcat?lock=4"],
-["Siberian","Domestic","https://loremflickr.com/500/500/siberiancat?lock=5"],
-["British Longhair","Domestic","https://loremflickr.com/500/500/britishlonghair?lock=6"],
-["Turkish Angora","Domestic","https://loremflickr.com/500/500/turkishangora?lock=7"],
-["Himalayan","Domestic","https://loremflickr.com/500/500/himalayancat?lock=8"],
-["Scottish Fold","Domestic","https://loremflickr.com/500/500/scottishfold?lock=9"],
-["Birman","Domestic","https://loremflickr.com/500/500/birmancat?lock=10"],
-["Somali","Domestic","https://loremflickr.com/500/500/somalicat?lock=11"],
-["Balinese","Domestic","https://loremflickr.com/500/500/balinesecat?lock=12"],
-["Chinchilla Persian","Domestic","https://loremflickr.com/500/500/chinchillapersian?lock=13"],
-["American Bobtail","Domestic","https://loremflickr.com/500/500/americanbobtail?lock=14"],
-["LaPerm","Domestic","https://loremflickr.com/500/500/lapermcat?lock=15"],
-["Selkirk Rex","Domestic","https://loremflickr.com/500/500/selkirksrex?lock=16"],
-["Bengal","Domestic","https://loremflickr.com/500/500/bengalcat?lock=17"],
-["Abyssinian","Domestic","https://loremflickr.com/500/500/abyssiniancat?lock=18"],
-["Sphynx","Domestic","https://loremflickr.com/500/500/sphynxcat?lock=19"],
-["Oriental Shorthair","Domestic","https://loremflickr.com/500/500/orientalshorthair?lock=20"],
-["Lynx","Wild","https://loremflickr.com/500/500/lynx?lock=21"],
-["Canada Lynx","Wild","https://loremflickr.com/500/500/canadlynx?lock=22"],
-["Bobcat","Wild","https://loremflickr.com/500/500/bobcat?lock=23"],
-["Caracal","Wild","https://loremflickr.com/500/500/caracal?lock=24"],
-["Serval","Wild","https://loremflickr.com/500/500/serval?lock=25"],
-["Pallas's Cat","Wild","https://loremflickr.com/500/500/pallascat?lock=26"],
-["Sand Cat","Wild","https://loremflickr.com/500/500/sandcat?lock=27"],
-["Fishing Cat","Wild","https://loremflickr.com/500/500/fishingcat?lock=28"],
-["Clouded Leopard","Wild","https://loremflickr.com/500/500/cloudedleopard?lock=29"],
-["Snow Leopard","Wild","https://loremflickr.com/500/500/snowleopard?lock=30"],
-["Tiger","Wild","https://loremflickr.com/500/500/tiger?lock=31"],
-["Lion","Wild","https://loremflickr.com/500/500/lion?lock=32"],
-["Jaguar","Wild","https://loremflickr.com/500/500/jaguar?lock=33"],
-["Leopard","Wild","https://loremflickr.com/500/500/leopard?lock=34"],
-["Cheetah","Wild","https://loremflickr.com/500/500/cheetah?lock=35"],
-["Ocelot","Wild","https://loremflickr.com/500/500/ocelot?lock=36"],
-["Margay","Wild","https://loremflickr.com/500/500/margay?lock=37"],
-["Red Panda","Wildcard","https://loremflickr.com/500/500/redpanda?lock=38"],
-["Fisher","Wildcard","https://loremflickr.com/500/500/fisheranimal?lock=39"],
-["Manul","Wild","https://loremflickr.com/500/500/manul?lock=40"]
-];
-const tiers=[["S","s"],["A","a"],["B","b"],["C","c"],["D","d"],["F","f"]];
-const board=document.querySelector("#board"),bank=document.querySelector("#bank"),count=document.querySelector("#count"),toast=document.querySelector("#toast");
-let dragged=null;
-function card(c){
- const el=document.createElement("article");el.className="cat";el.draggable=true;el.dataset.name=c[0];
- el.innerHTML=`<img src="${c[2]}" alt="${c[0]}" loading="lazy"><div class="name">${c[0]}</div><div class="kind">${c[1]}</div>`;
- el.addEventListener("dragstart",e=>{dragged=el;el.classList.add("dragging");e.dataTransfer.effectAllowed="move"});
- el.addEventListener("dragend",()=>{el.classList.remove("dragging");dragged=null;update()});
- return el;
-}
-function setup(){
- board.innerHTML="";
- tiers.forEach(([name,cls])=>{
-  const row=document.createElement("div");row.className="tier";
-  row.innerHTML=`<div class="label ${cls}">${name}</div><div class="dropzone ranked" data-tier="${name}"></div>`;
-  board.append(row);
- });
- bank.innerHTML="";cats.forEach(c=>bank.append(card(c)));wireDrops();update();
-}
-function wireDrops(){
- document.querySelectorAll(".dropzone,.bank").forEach(zone=>{
-  zone.addEventListener("dragover",e=>{e.preventDefault();zone.classList.add("over")});
-  zone.addEventListener("dragleave",()=>zone.classList.remove("over"));
-  zone.addEventListener("drop",e=>{
-   e.preventDefault();zone.classList.remove("over");if(!dragged)return;
-   zone.append(dragged);toastMsg(zone.classList.contains("bank")?"Back to the cat bank!":"Floof officially ranked!");update();
-  });
- });
-}
-function update(){count.textContent=`${bank.children.length} unranked · ${cats.length-bank.children.length} ranked`;}
-function toastMsg(s){toast.textContent=s;toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),1100)}
-function shuffle(){
- const items=[...bank.children];items.sort(()=>Math.random()-.5);items.forEach(x=>bank.append(x));toastMsg("New cat order!");
-}
-function randomize(){
- const all=[...bank.children];document.querySelectorAll(".ranked .cat").forEach(x=>all.push(x));
- document.querySelectorAll(".ranked").forEach(x=>x.innerHTML="");
- all.sort(()=>Math.random()-.5).forEach((x,i)=>document.querySelectorAll(".ranked")[i%6].append(x));
- update();toastMsg("Chaos ranking deployed 😼");
-}
-document.querySelector("#shuffle").onclick=shuffle;
-document.querySelector("#reset").onclick=()=>{setup();toastMsg("Fresh board!");
-};
-document.querySelector("#random").onclick=randomize;
-setup();
-</script>
+<body class="min-h-screen flex flex-col justify-between relative selection:bg-pink-500 selection:text-white">
+
+    <!-- Particle canvas background -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="relative z-10 w-full px-6 py-4 flex items-center justify-between border-b border-white/10 glass-card">
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="resetToHome()">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-pink-500 via-purple-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-pink-500/25">
+                <i class="fa-solid fa-compact-disc text-white text-xl animate-spin-slow"></i>
+            </div>
+            <div>
+                <h1 class="font-cinzel text-lg md:text-xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-purple-200 to-indigo-200">
+                    SWIFTIE SONG FINDER
+                </h1>
+                <p class="text-[11px] text-gray-400 font-light hidden sm:block">Find your soulmate Taylor Swift track</p>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-3">
+            <button onclick="startQuiz()" class="px-3.5 py-1.5 rounded-full text-xs font-semibold border border-pink-500/30 bg-pink-500/10 text-pink-300 hover:bg-pink-500/20 transition flex items-center gap-2 shadow-sm">
+                <i class="fa-solid fa-arrows-rotate"></i>
+                <span>Fresh Question Set</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="relative z-10 flex-1 flex items-center justify-center p-4 sm:p-6 md:p-8 max-w-4xl mx-auto w-full">
+
+        <!-- ================= 1. START LANDING VIEW ================= -->
+        <section id="view-start" class="w-full text-center space-y-8 py-6 animate-fade-in">
+            <div class="space-y-4">
+                <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest text-pink-300 bg-pink-500/10 border border-pink-500/20 shadow-inner">
+                    <i class="fa-solid fa-sparkles mr-2"></i> 8 Questions • 11 Eras • Infinite Fresh Runs
+                </span>
+                <h2 class="font-cinzel text-4xl sm:text-6xl font-black tracking-tight text-white leading-tight">
+                    Which Taylor Swift Song <br/>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-300 to-indigo-300">
+                        Is Your Soulmate Track?
+                    </span>
+                </h2>
+                <p class="text-gray-300 text-base sm:text-lg max-w-xl mx-auto font-light leading-relaxed">
+                    Take an 8-question aesthetic quiz to reveal your matched Taylor Swift anthem. Every time you restart, a brand-new set of questions & options is generated!
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto text-left">
+                <div class="p-3.5 rounded-2xl glass-card border border-white/10 text-center">
+                    <i class="fa-solid fa-compact-disc text-pink-400 text-lg mb-1 block"></i>
+                    <span class="text-xs font-bold text-white block">11 Album Eras</span>
+                    <span class="text-[10px] text-gray-400">Debut to TTPD</span>
+                </div>
+                <div class="p-3.5 rounded-2xl glass-card border border-white/10 text-center">
+                    <i class="fa-solid fa-shuffle text-purple-400 text-lg mb-1 block"></i>
+                    <span class="text-xs font-bold text-white block">Dynamic Pool</span>
+                    <span class="text-[10px] text-gray-400">Fresh sets on restart</span>
+                </div>
+                <div class="p-3.5 rounded-2xl glass-card border border-white/10 text-center">
+                    <i class="fa-solid fa-list-check text-indigo-400 text-lg mb-1 block"></i>
+                    <span class="text-xs font-bold text-white block">8 Swiftie Steps</span>
+                    <span class="text-[10px] text-gray-400">Aesthetic questions</span>
+                </div>
+                <div class="p-3.5 rounded-2xl glass-card border border-white/10 text-center">
+                    <i class="fa-solid fa-heart text-rose-400 text-lg mb-1 block"></i>
+                    <span class="text-xs font-bold text-white block">Deep Analysis</span>
+                    <span class="text-[10px] text-gray-400">Detailed breakdown</span>
+                </div>
+            </div>
+
+            <div class="pt-2">
+                <button onclick="startQuiz()" class="group relative inline-flex items-center justify-center px-10 py-4 font-bold text-white transition-all duration-300 bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 rounded-full shadow-xl shadow-purple-500/30 hover:shadow-purple-500/50 hover:scale-105 active:scale-95">
+                    <span class="text-lg tracking-wide">Begin 8-Question Quiz</span>
+                    <i class="fa-solid fa-arrow-right ml-3 group-hover:translate-x-1 transition-transform"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= 2. QUIZ QUESTION VIEW ================= -->
+        <section id="view-quiz" class="hidden w-full space-y-6">
+            
+            <!-- Progress Tracker -->
+            <div class="space-y-2">
+                <div class="flex justify-between items-center text-xs text-gray-400 font-medium">
+                    <span id="question-tracker">Question 1 of 8</span>
+                    <span class="text-pink-400 font-bold uppercase tracking-widest flex items-center gap-1.5">
+                        <i class="fa-solid fa-sparkles text-[10px]"></i> Taylor Swift Era Finder
+                    </span>
+                </div>
+                <div class="w-full bg-gray-800/80 h-3 rounded-full overflow-hidden p-0.5 border border-white/10 shadow-inner">
+                    <div id="progress-bar" class="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 h-full rounded-full transition-all duration-500 w-0 relative">
+                        <div class="absolute right-0 top-0 bottom-0 w-2 bg-white/80 rounded-full blur-[1px]"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div id="question-card" class="glass-card p-6 sm:p-10 rounded-3xl space-y-8 border border-white/10 transition-all duration-300 slide-active">
+                <div class="space-y-2">
+                    <span id="q-category" class="text-xs font-bold text-pink-400 tracking-widest uppercase">
+                        CATEGORY
+                    </span>
+                    <h3 id="q-title" class="font-cinzel text-2xl sm:text-3xl font-bold text-white leading-snug">
+                        Loading question...
+                    </h3>
+                </div>
+
+                <!-- Options Grid -->
+                <div id="options-container" class="grid grid-cols-1 gap-3 sm:gap-4">
+                    <!-- Dynamic answer options -->
+                </div>
+            </div>
+
+            <!-- Quiz Footer Controls -->
+            <div class="flex justify-between items-center px-2">
+                <button id="prev-btn" onclick="previousQuestion()" class="text-xs font-medium text-gray-400 hover:text-white flex items-center gap-2 transition disabled:opacity-20 disabled:cursor-not-allowed">
+                    <i class="fa-solid fa-chevron-left"></i> Previous Question
+                </button>
+                <span class="text-xs text-gray-500 italic">Shuffled fresh on every restart</span>
+            </div>
+        </section>
+
+        <!-- ================= 3. SONG RESULT REVEAL VIEW ================= -->
+        <section id="view-result" class="hidden w-full space-y-8 py-4">
+            
+            <div id="result-card" class="glass-card rounded-3xl p-6 sm:p-10 border border-white/15 space-y-8 relative overflow-hidden">
+                
+                <div id="result-glow" class="absolute -top-32 -left-32 w-96 h-96 bg-pink-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+                <!-- Title & Album Era Badge -->
+                <div class="text-center space-y-3 relative z-10">
+                    <span id="result-era-badge" class="inline-block px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase border era-lover shadow-sm">
+                        ✨ Lover Era
+                    </span>
+                    <h2 class="font-cinzel text-3xl sm:text-5xl font-black text-white tracking-wide leading-tight" id="result-song-title">
+                        Cruel Summer
+                    </h2>
+                    <p class="text-gray-300 font-medium text-sm sm:text-base flex items-center justify-center gap-2" id="result-album-name">
+                        <i class="fa-solid fa-record-vinyl text-pink-400"></i> Lover (2019)
+                    </p>
+                </div>
+
+                <!-- Cover & Lyric Box -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center relative z-10">
+                    
+                    <div class="md:col-span-5 flex flex-col items-center">
+                        <div class="relative group w-52 h-52 sm:w-60 sm:h-60 rounded-2xl overflow-hidden shadow-2xl border border-white/20">
+                            <img id="result-album-art" src="" alt="Album Cover" class="w-full h-full object-cover transition transform duration-500 group-hover:scale-105">
+                            <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button onclick="toggleAudioPreview()" class="w-14 h-14 rounded-full bg-white text-gray-900 flex items-center justify-center shadow-lg transform hover:scale-110 transition">
+                                    <i id="audio-icon" class="fa-solid fa-play text-xl ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Audio Player Simulation -->
+                        <div class="mt-4 flex items-center justify-between w-52 sm:w-60 px-4 py-2.5 bg-black/40 rounded-full border border-white/10 shadow-inner">
+                            <button onclick="toggleAudioPreview()" class="text-xs font-semibold text-pink-300 hover:text-pink-200 transition flex items-center gap-2">
+                                <i class="fa-solid fa-music"></i> <span id="audio-status-text">Play Audio Vibe</span>
+                            </button>
+                            <div class="flex items-end space-x-1 h-5">
+                                <div class="w-1 bg-pink-400 rounded-full h-2 animate-bar" style="animation-delay: 0.1s;"></div>
+                                <div class="w-1 bg-purple-400 rounded-full h-2 animate-bar" style="animation-delay: 0.3s;"></div>
+                                <div class="w-1 bg-indigo-400 rounded-full h-2 animate-bar" style="animation-delay: 0.2s;"></div>
+                                <div class="w-1 bg-pink-400 rounded-full h-2 animate-bar" style="animation-delay: 0.4s;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lyric Box -->
+                    <div class="md:col-span-7 space-y-4">
+                        <div class="bg-black/40 p-6 rounded-2xl border border-white/10 relative overflow-hidden">
+                            <i class="fa-solid fa-quote-left text-pink-500/15 text-5xl absolute top-2 left-2"></i>
+                            <p class="font-script text-2xl sm:text-3xl text-pink-200 relative z-10 leading-relaxed text-center px-3" id="result-lyric">
+                                "Devils roll the dice, angels roll their eyes..."
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 pt-1" id="result-tags">
+                            <!-- Dynamic tags -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Extended Breakdown Sections -->
+                <div class="space-y-6 pt-4 border-t border-white/10">
+                    <h3 class="font-cinzel text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-sparkles text-pink-400"></i> Deep Song Breakdown & Soul Match
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-white/5 p-5 rounded-2xl border border-white/10 space-y-2">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-pink-300 flex items-center gap-1.5">
+                                <i class="fa-solid fa-heart"></i> Soulmate Track Alignment
+                            </h4>
+                            <p class="text-xs sm:text-sm text-gray-300 leading-relaxed font-light" id="analysis-soulmate">
+                                Loading analysis...
+                            </p>
+                        </div>
+                        <div class="bg-white/5 p-5 rounded-2xl border border-white/10 space-y-2">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-purple-300 flex items-center gap-1.5">
+                                <i class="fa-solid fa-palette"></i> Emotional & Aesthetic Vibe
+                            </h4>
+                            <p class="text-xs sm:text-sm text-gray-300 leading-relaxed font-light" id="analysis-vibe">
+                                Loading analysis...
+                            </p>
+                        </div>
+                        <div class="bg-white/5 p-5 rounded-2xl border border-white/10 space-y-2">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-indigo-300 flex items-center gap-1.5">
+                                <i class="fa-solid fa-brain"></i> Mindset & Era Life Phase
+                            </h4>
+                            <p class="text-xs sm:text-sm text-gray-300 leading-relaxed font-light" id="analysis-mindset">
+                                Loading analysis...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Swiftie Lifestyle Grid -->
+                <div class="space-y-4 pt-2">
+                    <h3 class="font-cinzel text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-mug-hot text-amber-400"></i> Swiftie Lifestyle Pairings
+                    </h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <div class="p-4 rounded-xl bg-black/30 border border-white/10 space-y-1">
+                            <span class="text-[10px] font-bold uppercase text-gray-400 block">Companion Songs</span>
+                            <span class="text-xs font-bold text-pink-300 block truncate" id="pair-songs">Loading...</span>
+                        </div>
+                        <div class="p-4 rounded-xl bg-black/30 border border-white/10 space-y-1">
+                            <span class="text-[10px] font-bold uppercase text-gray-400 block">Beverage Pairing</span>
+                            <span class="text-xs font-bold text-purple-300 block truncate" id="pair-drink">Loading...</span>
+                        </div>
+                        <div class="p-4 rounded-xl bg-black/30 border border-white/10 space-y-1">
+                            <span class="text-[10px] font-bold uppercase text-gray-400 block">Outfit Aesthetic</span>
+                            <span class="text-xs font-bold text-indigo-300 block truncate" id="pair-outfit">Loading...</span>
+                        </div>
+                        <div class="p-4 rounded-xl bg-black/30 border border-white/10 space-y-1">
+                            <span class="text-[10px] font-bold uppercase text-gray-400 block">Listening Setting</span>
+                            <span class="text-xs font-bold text-emerald-300 block truncate" id="pair-setting">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Result Actions -->
+                <div class="pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-3 justify-between items-center">
+                    <button onclick="startQuiz()" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 text-white font-bold text-xs uppercase tracking-wider shadow-lg hover:opacity-95 hover:scale-105 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-arrows-rotate"></i> Restart Quiz (New 8 Questions)
+                    </button>
+                    
+                    <div class="flex gap-2 w-full sm:w-auto">
+                        <button onclick="copyResultCard()" class="flex-1 sm:flex-none px-4 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs transition flex items-center justify-center gap-2 border border-white/10">
+                            <i class="fa-solid fa-copy"></i> Copy Card
+                        </button>
+                        <button onclick="shareResult()" class="flex-1 sm:flex-none px-4 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs transition flex items-center justify-center gap-2 border border-white/10">
+                            <i class="fa-solid fa-share-nodes"></i> Share
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="relative z-10 w-full py-4 px-6 text-center text-xs text-gray-500 border-t border-white/5 bg-black/60">
+        <p>Built for Swifties • 11 Eras • Dynamic 8-Question Engine</p>
+    </footer>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast-msg" class="fixed bottom-6 right-6 z-50 px-5 py-3 rounded-xl bg-gray-900 border border-pink-500/40 text-pink-200 text-xs font-medium shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300">
+        <i class="fa-solid fa-circle-check text-pink-400 text-base"></i>
+        <span id="toast-text">Action successful!</span>
+    </div>
+
+    <script>
+        /* ================= 11 ERAS SONG DATABASE ================= */
+        const SONG_DATABASE = [
+            {
+                id: 'our-song',
+                title: 'Our Song',
+                album: 'Taylor Swift (Debut) (2006)',
+                era: 'Debut',
+                eraClass: 'era-debut',
+                art: 'https://placehold.co/400x400/059669/ffffff?text=Debut',
+                lyric: '"Our song is the slamming screen door, sneakin\' out late, tappin\' on your window..."',
+                tags: ['Acoustic Charm', 'Screen Doors', 'Pure Nostalgia'],
+                analysis: {
+                    soulmate: "You match with 'Our Song' because your heart appreciates down-to-earth simplicity and spontaneous joy. You don't need over-complicated grand gestures; you find real poetry in life's everyday details.",
+                    vibe: "Warm summer porch swings, country breezes, acoustic banjo strums, and laughter echoing under twilight skies.",
+                    mindset: "Pure, joyful authenticity—creating your own soundtrack out of the simple moments you share with people you love."
+                },
+                pairings: {
+                    songs: "Picture to Burn, Should've Said No, Tim McGraw",
+                    drink: "Sweet Southern Iced Tea",
+                    outfit: "Denim Jacket, Cowboy Boots & Sundress",
+                    setting: "Porch Swing on a Warm Summer Night"
+                }
+            },
+            {
+                id: 'fearless',
+                title: 'Fearless',
+                album: 'Fearless (Taylor\'s Version) (2021)',
+                era: 'Fearless',
+                eraClass: 'era-fearless',
+                art: 'https://placehold.co/400x400/ca8a04/ffffff?text=Fearless+TV',
+                lyric: '"And I don\'t know how it gets better than this, you take my hand and drag me head first, fearless!"',
+                tags: ['Golden Sparkles', 'Dancing in Rain', 'Pure Joy'],
+                analysis: {
+                    soulmate: "'Fearless' aligns with your soul because you possess an optimistic heart ready for romantic courage. You dive headfirst into new experiences without letting fear hold you back.",
+                    vibe: "Golden rain falling through warm outdoor string lights, dancing on wet pavement, and infectious laughter.",
+                    mindset: "Embracing life with uninhibited wonder, optimism, and daring emotional authenticity."
+                },
+                pairings: {
+                    songs: "Love Story, You Belong With Me, Sparks Fly",
+                    drink: "Golden Honey Lemonade",
+                    outfit: "Fringed Gold Sequin Dress & Boots",
+                    setting: "Dancing Under Outdoor String Lights in Rain"
+                }
+            },
+            {
+                id: 'enchanted',
+                title: 'Enchanted',
+                album: 'Speak Now (Taylor\'s Version) (2023)',
+                era: 'Speak Now',
+                eraClass: 'era-speaknow',
+                art: 'https://placehold.co/400x400/9333ea/ffffff?text=Speak+Now+TV',
+                lyric: '"This night is sparkling, don\'t you let it go... I was enchanted to meet you."',
+                tags: ['Purple Wonder', 'Fairy Tale', 'Sparkling Eyes'],
+                analysis: {
+                    soulmate: "You match with 'Enchanted' because you are an absolute hopeless romantic who sees magic in fresh encounters. Your imagination creates fairy tales out of unforgettable moments.",
+                    vibe: "Shimmering purple evening gowns, grand ballrooms, starry midnight balconies, and quiet lingering glances.",
+                    mindset: "Living in dreamy wonder, hoping with open vulnerability that special connections feel the exact same spark."
+                },
+                pairings: {
+                    songs: "Sparks Fly, Mine, Long Live",
+                    drink: "Iced Lavender Blackberry Tea",
+                    outfit: "Flowing Purple Ballgown or Silk Dress",
+                    setting: "Balcony Overlooking a Starry Night Sky"
+                }
+            },
+            {
+                id: 'all-too-well',
+                title: 'All Too Well (10 Min Version)',
+                album: 'Red (Taylor\'s Version) (2021)',
+                era: 'Red',
+                eraClass: 'era-red',
+                art: 'https://placehold.co/400x400/991b1b/ffffff?text=Red+TV',
+                lyric: '"And you call me up again just to break me like a promise, so casually cruel in the name of being honest."',
+                tags: ['Red Scarf', 'Autumn Leaves', 'Deep Storytelling'],
+                analysis: {
+                    soulmate: "'All Too Well' is your match because you possess a vivid memory and feel life in rich, detailed emotional high-definition. You honor your memories and transform heartbreak into timeless art.",
+                    vibe: "Crisp October wind carrying maple leaves, red knit scarves, polaroid pictures, and quiet late-night drives through small towns.",
+                    mindset: "A state of raw emotional honesty—claiming your narrative completely and refusing to minimize what you felt."
+                },
+                pairings: {
+                    songs: "Champagne Problems, Better Man, Sad Beautiful Tragic",
+                    drink: "Hot Cinnamon Apple Cider",
+                    outfit: "Classic Trench Coat & Red Scarf",
+                    setting: "Autumn Park Walk Under Falling Leaves"
+                }
+            },
+            {
+                id: 'style',
+                title: 'Style',
+                album: '1989 (Taylor\'s Version) (2023)',
+                era: '1989',
+                eraClass: 'era-1989',
+                art: 'https://placehold.co/400x400/0284c7/ffffff?text=1989+TV',
+                lyric: '"You got that James Dean daydream look in your eye, and I got that red lip classic thing that you like."',
+                tags: ['Neon Skyline', 'Red Lipstick', 'Timeless Cool'],
+                analysis: {
+                    soulmate: "You match with 'Style' because you embody effortless, classic confidence. Trends come and go, but your magnetic aura and sharp instincts never go out of style.",
+                    vibe: "Coastal ocean drives at midnight, sleek sunglasses, bold red lipstick, and electric synth-pop guitar riffs.",
+                    mindset: "Unshakeable cool confidence and effortless electric chemistry that withstands the test of time."
+                },
+                pairings: {
+                    songs: "Wildest Dreams, New Romantics, Blank Space",
+                    drink: "Iced Caramel Cold Brew",
+                    outfit: "Classic White Tee, Leather Jacket & Red Lip",
+                    setting: "Coastal Highway Night Drive"
+                }
+            },
+            {
+                id: 'delicate',
+                title: 'Delicate',
+                album: 'reputation (2017)',
+                era: 'reputation',
+                eraClass: 'era-reputation',
+                art: 'https://placehold.co/400x400/1f2937/ffffff?text=reputation',
+                lyric: '"My reputation\'s never been worse, so you must like me for me... Isn\'t it delicate?"',
+                tags: ['Dark Aesthetic', 'Late Night', 'Genuine Connection'],
+                analysis: {
+                    soulmate: "'Delicate' matches your soul because you value deep, unvarnished authenticity over public noise. You guard your trust carefully, but when you let someone in, it's sincere.",
+                    vibe: "Neon blue rain puddles, quiet dive bars at midnight, dark silk blazers, and whispered secrets in empty corridors.",
+                    mindset: "Navigating tender beginnings where real intimacy matters far more than external appearances."
+                },
+                pairings: {
+                    songs: "Call It What You Want, Maroon, Labyrinth",
+                    drink: "Dark Roast Cold Brew with Vanilla",
+                    outfit: "Sleek Dark Leather Jacket & Silver Rings",
+                    setting: "Quiet Corner of a City Café at Night"
+                }
+            },
+            {
+                id: 'cruel-summer',
+                title: 'Cruel Summer',
+                album: 'Lover (2019)',
+                era: 'Lover',
+                eraClass: 'era-lover',
+                art: 'https://placehold.co/400x400/f472b6/ffffff?text=Lover',
+                lyric: '"Devils roll the dice, angels roll their eyes... and I scream for whatever it\'s worth!"',
+                tags: ['Pink Glitter', 'Late Night Drive', 'High Drama'],
+                analysis: {
+                    soulmate: "'Cruel Summer' is your soulmate because you thrive on intense passion and cathartic emotional highs. You don't do lukewarm feelings; when you care, you dive in completely.",
+                    vibe: "Golden-hour pink and lavender skies, warm summer breezes, neon city lights, and scream-singing in a convertible.",
+                    mindset: "High-stakes emotional courage—embracing the thrilling chaos of intense connections."
+                },
+                pairings: {
+                    songs: "Getaway Car, Style, August",
+                    drink: "Iced Pink Lotus Dragonfruit Espresso",
+                    outfit: "Hot Pink Sequin Blazer & Heart Glasses",
+                    setting: "Convertible Drive at Sunset"
+                }
+            },
+            {
+                id: 'cardigan',
+                title: 'cardigan',
+                album: 'folklore (2020)',
+                era: 'folklore',
+                eraClass: 'era-folklore',
+                art: 'https://placehold.co/400x400/374151/ffffff?text=folklore',
+                lyric: '"And when I felt like I was an old cardigan under someone\'s bed, you put me on and said I was your favorite."',
+                tags: ['Vintage Woven', 'Rainy Days', 'Nostalgic'],
+                analysis: {
+                    soulmate: "'Cardigan' aligns with your soul because you value deep comfort, quiet loyalty, and timeless vintage beauty. You see magic in simple, understated moments.",
+                    vibe: "Misty forest trails, worn leather journals, antique bookstores, and warm tea steaming beside a rain-streaked glass window.",
+                    mindset: "A contemplative, wise outlook where past heartbreaks serve as cherished lessons in growth and self-discovery."
+                },
+                pairings: {
+                    songs: "willow, august, maroon",
+                    drink: "Chai Tea Latte with Oat Milk",
+                    outfit: "Oversized Vintage Knit Sweater",
+                    setting: "Cabin in the Woods on a Rainy Day"
+                }
+            },
+            {
+                id: 'willow',
+                title: 'willow',
+                album: 'evermore (2020)',
+                era: 'evermore',
+                eraClass: 'era-evermore',
+                art: 'https://placehold.co/400x400/78350f/ffffff?text=evermore',
+                lyric: '"Life was a willow and it bent right to your wind... head on the pillow, I could feel you sneaking in."',
+                tags: ['Gold Thread', 'Enchanted Forest', 'Mystical'],
+                analysis: {
+                    soulmate: "'Willow' reflects your enchanted, fluid nature. You go with the flow of life while casting an undeniable spell of warmth on everyone around you.",
+                    vibe: "Golden glowing lanterns in moonlit woods, velvet cloaks, crackling campfires, and woven herbal garlands.",
+                    mindset: "Embracing fate and natural emotional rhythm with effortless grace and gentle warmth."
+                },
+                pairings: {
+                    songs: "ivy, gold rush, invisible string",
+                    drink: "Honey Lavender Herbal Tea",
+                    outfit: "Earthy Velvet Cloak & Gold Jewelry",
+                    setting: "Moonlit Forest Path with Lanterns"
+                }
+            },
+            {
+                id: 'bejeweled',
+                title: 'Bejeweled',
+                album: 'Midnights (2022)',
+                era: 'Midnights',
+                eraClass: 'era-midnights',
+                art: 'https://placehold.co/400x400/1e3a8a/ffffff?text=Midnights',
+                lyric: '"Best believe I\'m still bejeweled when I walk in the room, I can still make the whole place shimmer!"',
+                tags: ['Shimmer', 'Diamonds', 'Reclaiming Power'],
+                analysis: {
+                    soulmate: "'Bejeweled' reflects your inner light! You know your value and refuse to let anyone dull your spark or take your presence for granted.",
+                    vibe: "Cobalt blue midnight skies, flashing strobe lights, sparkling sapphire crystals, and effortless star-power confidence.",
+                    mindset: "A triumphant era of self-worth—reclaiming your spark and reminding the world how brightly you shine."
+                },
+                pairings: {
+                    songs: "Karma, Mirrorball, Blank Space",
+                    drink: "Sparkling Blueberry Mocktail",
+                    outfit: "Rhinestone Corset & Metallic Heels",
+                    setting: "VIP Lounge or Penthouse Balcony"
+                }
+            },
+            {
+                id: 'fortnight',
+                title: 'Fortnight (feat. Post Malone)',
+                album: 'THE TORTURED POETS DEPARTMENT (2024)',
+                era: 'TTPD',
+                eraClass: 'era-ttpd',
+                art: 'https://placehold.co/400x400/27272a/ffffff?text=TTPD',
+                lyric: '"I love you, it\'s ruining my life... I touched down for fifty-four hours of a fortnight."',
+                tags: ['Monochrome', 'Poetic Melancholy', 'Vintage Typewriter'],
+                analysis: {
+                    soulmate: "'Fortnight' connects with your introspective, artistic soul. You view emotional trials with a literary lens, finding quiet catharsis in poetic storytelling.",
+                    vibe: "Muted sepia hues, antique manuscripts, typewriter ink stains, dramatic coastal clouds, and quiet rain showers.",
+                    mindset: "A reflective, analytical era of processing sudden shifts in life with graceful literary poise."
+                },
+                pairings: {
+                    songs: "The Smallest Man Who Ever Lived, My Boy Only Breaks His Favorite Toys",
+                    drink: "Earl Grey Tea with Steamed Milk",
+                    outfit: "Tailored Charcoal Wool Coat & Silver Rings",
+                    setting: "Dimly Lit Library on a Rainy Evening"
+                }
+            }
+        ];
+
+        /* ================= EXPANSIVE QUESTION BANK (24+ QUESTIONS) ================= */
+        const QUESTION_BANK = [
+            {
+                category: "Glitter & Aesthetic",
+                title: "Which glitter palette captures your soul's current wavelength?",
+                options: [
+                    { label: "Iridescent Cotton-Candy Pink & Golden Sunset", score: "cruel-summer" },
+                    { label: "Midnight Cobalt Silver & Diamond Dust", score: "bejeweled" },
+                    { label: "Deep Charcoal Black & Metallic Snake Silver", score: "delicate" },
+                    { label: "Sepia Earth Moss & Amber Forest Sparkle", score: "cardigan" }
+                ]
+            },
+            {
+                category: "Midnight Activity",
+                title: "It's 12:00 AM on a Friday night. Where are you found?",
+                options: [
+                    { label: "Scream-singing on a late-night drive with windows down", score: "cruel-summer" },
+                    { label: "Writing poetic entries in a vintage leather notebook", score: "fortnight" },
+                    { label: "Dressing up in sequins for an impromptu night out", score: "bejeweled" },
+                    { label: "Curled up in a cozy sweater with hot tea and a book", score: "cardigan" }
+                ]
+            },
+            {
+                category: "Beverage Order",
+                title: "Choose your go-to Swiftie coffee or drink order:",
+                options: [
+                    { label: "Iced Vanilla Latte with extra caramel drizzle", score: "fearless" },
+                    { label: "Classic Black Dark Roast Coffee - no sugar", score: "delicate" },
+                    { label: "Chai Tea Latte with Oat Milk and cinnamon", score: "all-too-well" },
+                    { label: "Honey Lavender Herbal Cold Brew", score: "willow" }
+                ]
+            },
+            {
+                category: "Swiftie Bridge Vibe",
+                title: "Which Taylor Swift bridge energy speaks to you most?",
+                options: [
+                    { label: "The high-voltage, desperate screaming bridge (Cruel Summer)", score: "cruel-summer" },
+                    { label: "The raw, 10-minute storytelling bridge (All Too Well)", score: "all-too-well" },
+                    { label: "The quiet, misty acoustic revelation (Cardigan)", score: "cardigan" },
+                    { label: "The bad-ass synth power anthem bridge (Getaway Car)", score: "delicate" }
+                ]
+            },
+            {
+                category: "Cat Personality Trait",
+                title: "If you were a Swiftie cat, what would your primary vibe be?",
+                options: [
+                    { label: "Glamorous diva basking in the sunniest spot in the room", score: "bejeweled" },
+                    { label: "Mysterious midnight shadow who selectively chooses friends", score: "delicate" },
+                    { label: "Affectionate hopeless romantic purring on a woven blanket", score: "cardigan" },
+                    { label: "Playful ginger kitten bouncing around in high energy", score: "our-song" }
+                ]
+            },
+            {
+                category: "Atmosphere & Weather",
+                title: "Pick your absolute ultimate weather atmosphere:",
+                options: [
+                    { label: "Crisp October autumn breeze with red maple leaves", score: "all-too-well" },
+                    { label: "Warm golden summer sunset right before a lightning storm", score: "cruel-summer" },
+                    { label: "Gentle fog and soft rain shower over a pine forest", score: "willow" },
+                    { label: "Clear midnight sky illuminated by a full glowing moon", score: "bejeweled" }
+                ]
+            },
+            {
+                category: "Secret Superpower",
+                title: "What is your emotional secret superpower?",
+                options: [
+                    { label: "Turning painful heartbreak into breathtaking creative art", score: "fortnight" },
+                    { label: "Lighting up any dark room with effortless radiance", score: "bejeweled" },
+                    { label: "Unshakeable loyalty to the few people who truly matter", score: "delicate" },
+                    { label: "Uninhibited optimism and romantic courage", score: "fearless" }
+                ]
+            },
+            {
+                category: "Dream Travel Escapade",
+                title: "Where is your soul asking to travel right now?",
+                options: [
+                    { label: "A secluded cottage in the Scottish Highlands", score: "cardigan" },
+                    { label: "A penthouse suite overlooking a neon city harbour", score: "style" },
+                    { label: "A coastal beach house during peak summer romance", score: "cruel-summer" },
+                    { label: "A vintage historic apartment in rainy London", score: "fortnight" }
+                ]
+            },
+            {
+                category: "Notebook Aesthetic",
+                title: "Which notebook journal would you buy at a bookstore?",
+                options: [
+                    { label: "Black leather embossed with silver snake patterns", score: "delicate" },
+                    { label: "Pressed floral linen cover with gold foil ribbon bookmark", score: "willow" },
+                    { label: "Velvet purple hardcover with celestial gold stars", score: "enchanted" },
+                    { label: "Minimalist typewriter-typed monochrome manuscript notebook", score: "fortnight" }
+                ]
+            },
+            {
+                category: "Rainy Day Activity",
+                title: "It's pouring rain outside. What are you doing inside?",
+                options: [
+                    { label: "Baking cinnamon rolls while acoustic music plays", score: "our-song" },
+                    { label: "Dancing in the rain outside in barefoot wild abandon", score: "fearless" },
+                    { label: "Binge-watching dramatic mystery movies under heavy quilts", score: "cardigan" },
+                    { label: "Staring out the window listening to dramatic heartbreak tracks", score: "all-too-well" }
+                ]
+            },
+            {
+                category: "Party Superpower",
+                title: "When you arrive at a party, what's your signature move?",
+                options: [
+                    { label: "Making a entrance with showstopping outfits and glitter", score: "bejeweled" },
+                    { label: "Finding the host's cat or dog and hanging out in the quiet corner", score: "cardigan" },
+                    { label: "Taking over the DJ booth to queue pop classic anthems", score: "style" },
+                    { label: "Deep 1-on-1 conversations in the kitchen at 2 AM", score: "delicate" }
+                ]
+            },
+            {
+                category: "Sunset Mood",
+                title: "What feelings does a pastel sunset evoke in you?",
+                options: [
+                    { label: "Nostalgia for unforgettable summer nights and crush feelings", score: "cruel-summer" },
+                    { label: "Wonder and hope that tomorrow brings fresh fairy-tale magic", score: "enchanted" },
+                    { label: "Peace and gratitude for quiet simple everyday blessings", score: "our-song" },
+                    { label: "Inspiration to write emotional prose or lyrics", score: "fortnight" }
+                ]
+            },
+            {
+                category: "Fashion Statement",
+                title: "Which accessory is non-negotiable for your signature look?",
+                options: [
+                    { label: "A bold, classic red lip that never fails", score: "style" },
+                    { label: "Chunky knit scarf and vintage leather boots", score: "all-too-well" },
+                    { label: "Rhinestone jewelry and shimmering highlighter", score: "bejeweled" },
+                    { label: "Stackable silver rings and dark sunglasses", score: "delicate" }
+                ]
+            },
+            {
+                category: "First Date Vibe",
+                title: "What is your ideal dream first date?",
+                options: [
+                    { label: "Late-night drive to get ice cream under neon lights", score: "cruel-summer" },
+                    { label: "Wandering through an antique flea market or bookstore", score: "cardigan" },
+                    { label: "Stargazing in an open field with a picnic blanket", score: "enchanted" },
+                    { label: "Concert tickets to a high-energy live performance", score: "fearless" }
+                ]
+            },
+            {
+                category: "Conflict Style",
+                title: "How do you respond when someone wrongs you?",
+                options: [
+                    { label: "Write a detailed, devastating masterpiece processing it all", score: "all-too-well" },
+                    { label: "Disappear into the shadows and let karma handle it", score: "delicate" },
+                    { label: "Shine so bright that my success is the ultimate answer", score: "bejeweled" },
+                    { label: "Confront it directly with raw, unfiltered emotional truth", score: "fortnight" }
+                ]
+            },
+            {
+                category: "Dream Sanctuary",
+                title: "Describe your ideal sanctuary room:",
+                options: [
+                    { label: "Sunlit room with porch windows, acoustic guitars, and plants", score: "our-song" },
+                    { label: "Dimly lit room with candles, vinyl records, and dark velvet sofas", score: "delicate" },
+                    { label: "Cozy attic with sloped wooden beams, books, and rain sound", score: "cardigan" },
+                    { label: "High-rise condo with floor-to-ceiling city skyline views", score: "style" }
+                ]
+            }
+        ];
+
+        /* ================= APP STATE MANAGEMENT ================= */
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let isAudioPlaying = false;
+        let currentMatchedSong = null;
+
+        /* ================= INITIALIZATION ================= */
+        window.onload = function() {
+            initParticles();
+        };
+
+        /* ================= CANVAS PARTICLE ENGINE ================= */
+        function initParticles() {
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            for (let i = 0; i < 55; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2.2 + 0.5,
+                    speedX: (Math.random() - 0.5) * 0.35,
+                    speedY: (Math.random() - 0.5) * 0.35,
+                    opacity: Math.random() * 0.7 + 0.2
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.x += p.speedX;
+                    p.y += p.speedY;
+
+                    if (p.x < 0) p.x = canvas.width;
+                    if (p.x > canvas.width) p.x = 0;
+                    if (p.y < 0) p.y = canvas.height;
+                    if (p.y > canvas.height) p.y = 0;
+
+                    ctx.fillStyle = `rgba(244, 114, 182, ${p.opacity})`;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        /* ================= DYNAMIC QUESTION SELECTION ENGINE ================= */
+        function generateRandom8Questions() {
+            // Shuffle the entire question bank
+            const shuffledBank = [...QUESTION_BANK].sort(() => 0.5 - Math.random());
+            
+            // Select exactly 8 distinct questions per quiz run
+            const selected = shuffledBank.slice(0, 8);
+
+            // Shuffle options inside each question
+            return selected.map(q => ({
+                ...q,
+                options: [...q.options].sort(() => 0.5 - Math.random())
+            }));
+        }
+
+        /* ================= QUIZ FLOW ENGINE ================= */
+        function startQuiz() {
+            currentQuestions = generateRandom8Questions();
+            currentQuestionIndex = 0;
+            userAnswers = [];
+
+            document.getElementById('view-start').classList.add('hidden');
+            document.getElementById('view-result').classList.add('hidden');
+            document.getElementById('view-quiz').classList.remove('hidden');
+
+            renderCurrentQuestion();
+        }
+
+        function renderCurrentQuestion() {
+            const q = currentQuestions[currentQuestionIndex];
+            const total = currentQuestions.length;
+
+            // Update progress bar
+            const pct = ((currentQuestionIndex + 1) / total) * 100;
+            document.getElementById('progress-bar').style.width = `${pct}%`;
+            document.getElementById('question-tracker').innerText = `Question ${currentQuestionIndex + 1} of ${total}`;
+
+            // Populate text
+            document.getElementById('q-category').innerText = q.category;
+            document.getElementById('q-title').innerText = q.title;
+
+            // Render option buttons
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-card w-full text-left p-4 sm:p-5 rounded-2xl glass-card border border-white/10 flex items-center justify-between group';
+                btn.onclick = () => handleAnswerSelect(opt.score);
+
+                btn.innerHTML = `
+                    <div class="flex items-center space-x-3.5">
+                        <span class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-xs font-bold text-pink-300 group-hover:bg-pink-500 group-hover:text-white group-hover:border-pink-500 transition">
+                            ${String.fromCharCode(65 + idx)}
+                        </span>
+                        <span class="text-sm sm:text-base text-gray-200 font-medium group-hover:text-white transition">
+                            ${opt.label}
+                        </span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-xs text-gray-500 group-hover:text-pink-400 group-hover:translate-x-1 transition"></i>
+                `;
+                optionsContainer.appendChild(btn);
+            });
+
+            // Navigation button logic
+            document.getElementById('prev-btn').disabled = currentQuestionIndex === 0;
+        }
+
+        function handleAnswerSelect(songId) {
+            userAnswers[currentQuestionIndex] = songId;
+
+            if (currentQuestionIndex < currentQuestions.length - 1) {
+                currentQuestionIndex++;
+                const card = document.getElementById('question-card');
+                card.classList.add('opacity-40', 'scale-98');
+                setTimeout(() => {
+                    renderCurrentQuestion();
+                    card.classList.remove('opacity-40', 'scale-98');
+                }, 150);
+            } else {
+                calculateAndShowResult();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderCurrentQuestion();
+            }
+        }
+
+        /* ================= RESULT MATCHING ALGORITHM ================= */
+        function calculateAndShowResult() {
+            const tally = {};
+            userAnswers.forEach(id => {
+                tally[id] = (tally[id] || 0) + 1;
+            });
+
+            let matchedSong = SONG_DATABASE[0];
+            let maxCount = -1;
+
+            SONG_DATABASE.forEach(song => {
+                const score = tally[song.id] || 0;
+                if (score > maxCount) {
+                    maxCount = score;
+                    matchedSong = song;
+                }
+            });
+
+            currentMatchedSong = matchedSong;
+
+            // Render Result Card Data
+            document.getElementById('result-song-title').innerText = matchedSong.title;
+            document.getElementById('result-album-name').innerHTML = `<i class="fa-solid fa-record-vinyl text-pink-400"></i> ${matchedSong.album}`;
+            document.getElementById('result-album-art').src = matchedSong.art;
+            document.getElementById('result-lyric').innerText = matchedSong.lyric;
+
+            // Era Badge styling
+            const badge = document.getElementById('result-era-badge');
+            badge.className = `inline-block px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase border ${matchedSong.eraClass} shadow-sm`;
+            badge.innerText = `✨ ${matchedSong.era} Era`;
+
+            // Render tags
+            const tagsContainer = document.getElementById('result-tags');
+            tagsContainer.innerHTML = matchedSong.tags.map(tag => `
+                <span class="px-3 py-1 rounded-full text-xs font-medium bg-white/10 text-pink-200 border border-white/10">
+                    ✨ ${tag}
+                </span>
+            `).join('');
+
+            // Extended Multi-Paragraph Analyses
+            document.getElementById('analysis-soulmate').innerText = matchedSong.analysis.soulmate;
+            document.getElementById('analysis-vibe').innerText = matchedSong.analysis.vibe;
+            document.getElementById('analysis-mindset').innerText = matchedSong.analysis.mindset;
+
+            // Swiftie Lifestyle Grid
+            document.getElementById('pair-songs').innerText = matchedSong.pairings.songs;
+            document.getElementById('pair-drink').innerText = matchedSong.pairings.drink;
+            document.getElementById('pair-outfit').innerText = matchedSong.pairings.outfit;
+            document.getElementById('pair-setting').innerText = matchedSong.pairings.setting;
+
+            // Switch view
+            document.getElementById('view-quiz').classList.add('hidden');
+            document.getElementById('view-result').classList.remove('hidden');
+        }
+
+        function resetToHome() {
+            document.getElementById('view-quiz').classList.add('hidden');
+            document.getElementById('view-result').classList.add('hidden');
+            document.getElementById('view-start').classList.remove('hidden');
+        }
+
+        /* ================= AUDIO PREVIEW SIMULATOR ================= */
+        function toggleAudioPreview() {
+            const icon = document.getElementById('audio-icon');
+            const statusText = document.getElementById('audio-status-text');
+
+            if (isAudioPlaying) {
+                isAudioPlaying = false;
+                icon.className = 'fa-solid fa-play text-xl ml-1';
+                statusText.innerText = 'Play Audio Vibe';
+            } else {
+                isAudioPlaying = true;
+                icon.className = 'fa-solid fa-pause text-xl';
+                statusText.innerText = 'Playing Ambient Track';
+            }
+        }
+
+        /* ================= COPY & SHARE UTILITIES ================= */
+        function copyResultCard() {
+            if (!currentMatchedSong) return;
+            
+            const summary = `✨ TAYLOR SWIFT SONG FINDER MATCH ✨
+Track: "${currentMatchedSong.title}"
+Album Era: ${currentMatchedSong.album}
+Lyric: ${currentMatchedSong.lyric}
+Drink Pairing: ${currentMatchedSong.pairings.drink}
+Outfit Vibe: ${currentMatchedSong.pairings.outfit}
+
+Take the 8-Question Quiz to discover yours!`;
+
+            copyTextToClipboard(summary);
+            showToast("Detailed result summary copied to clipboard!");
+        }
+
+        function shareResult() {
+            if (!currentMatchedSong) return;
+            const text = `I matched with "${currentMatchedSong.title}" (${currentMatchedSong.era} Era) on the Swiftie Song Finder! Discover your track:`;
+            copyTextToClipboard(text);
+            showToast("Share link text copied to clipboard!");
+        }
+
+        function copyTextToClipboard(text) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text);
+            } else {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast-msg');
+            document.getElementById('toast-text').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
 </body>
 </html>
